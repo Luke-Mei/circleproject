@@ -6,6 +6,8 @@ using namespace std;
 int main()
 {
 	Clock clock;
+	//changes the constant speed of radius change
+	//Before the animation's speed was dependent on the frame rate.
 	float speed = 40.f;
 
 	sf::RenderWindow window( sf::VideoMode( { 800, 600 } ), "circle!" );
@@ -32,6 +34,7 @@ int main()
 				window.close();
 		}
 
+		//calculates the number of seconds since the previous frame
 		float dt = clock.restart().asSeconds();
 		if (growing) {
 			radius = radius + speed*dt;
@@ -46,6 +49,7 @@ int main()
 		}
 
 		shape.setRadius(radius);
+		// Keep the circle centered as its radius changes.
 		shape.setOrigin({radius, radius});
 
 		window.clear();
