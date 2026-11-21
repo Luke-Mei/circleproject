@@ -1,4 +1,5 @@
 #include <SFML/Graphics.hpp>
+#include <cmath>
 #include <time.h>
 using namespace sf; 
 using namespace std;
@@ -6,9 +7,9 @@ using namespace std;
 int main()
 {
 	Clock clock;
-	//changes the constant speed of radius change
-	//Before the animation's speed was dependent on the frame rate.
-	float speed = 40.f;
+
+	//total time elapsed
+	float t = 0.f;
 
 	sf::RenderWindow window( sf::VideoMode( { 800, 600 } ), "circle!" );
 	sf::CircleShape shape( 100.f );
@@ -21,10 +22,11 @@ int main()
 	shape.setOutlineThickness(10.f);
 	shape.setOutlineColor(Color::White);
 
-	float radius = shape.getRadius();
-	float maxRadius = 120.f;
-	float minRadius = 80.f;
-	bool growing = true;
+	float base_radius = shape.getRadius();
+	float radius = base_radius;
+	float amplitude = 20.f;
+	//radians per second
+	float angular_freq = 3.14159265f;
 
 	while ( window.isOpen() )
 	{
@@ -36,18 +38,10 @@ int main()
 
 		//calculates the number of seconds since the previous frame
 		float dt = clock.restart().asSeconds();
-		if (growing) {
-			radius = radius + speed*dt;
-		} else {
-			radius = radius - speed*dt;
-		}
+		t = t + dt;
 
-		if (radius > maxRadius){
-			growing = false;
-		}else if (radius < minRadius){
-			growing = true;
-		}
-
+		radius = base_radius + amplitude*sin(angular_freq*t);
+		
 		shape.setRadius(radius);
 		// Keep the circle centered as its radius changes.
 		shape.setOrigin({radius, radius});
